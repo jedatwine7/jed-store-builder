@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>African Store Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Create Your Online Store</h1>
+  </header>
+  <main>
+    <form id="storeForm">
+      <input type="text" name="storeName" placeholder="Store Name" required>
+      <input type="text" name="currency" placeholder="Preferred Currency (e.g. UGX, KES)" required>
+      <input type="text" name="contact" placeholder="Seller Contact" required>
+      <input type="text" name="deliveryZones" placeholder="Delivery Zones (comma separated)" required>
+      <h2>Payment Options</h2>
+      <input type="text" name="mobileMoney" placeholder="Mobile Money Number">
+      <input type="text" name="bankAccount" placeholder="Bank Account Number">
+      <label><input type="checkbox" name="cashOnDelivery"> Cash on Delivery</label>
+      <h2>Products</h2>
+      <div id="products"></div>
+      <button type="button" onclick="addProduct()">Add Product</button>
+      <button type="submit">Create Store</button>
+    </form>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f7f7f7; }
+header { background: #2d3e50; color: #fff; padding: 1em; text-align: center; }
+main { max-width: 500px; margin: 2em auto; background: #fff; padding: 2em; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+form input, form button, form label { display: block; width: 100%; margin-bottom: 1em; padding: 0.7em; border-radius: 4px; border: 1px solid #ccc; }
+form button { background: #2d3e50; color: #fff; border: none; cursor: pointer; }
+form button:hover { background: #1a2533; }
+.product-item { border: 1px solid #eee; padding: 1em; margin-bottom: 1em; border-radius: 4px; background: #fafafa; }
+@media (max-width: 600px) { main { padding: 1em; } }

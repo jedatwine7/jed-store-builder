@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jed Dropshipping Store</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+    header {
+      background: #1e293b;
+      color: #fff;
+      padding: 2em 1em 1em 1em;
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+      letter-spacing: 1px;
+      border-bottom: 2px solid #fbbf24;
+    }
+    main {
+      max-width: 500px;
+      margin: 2em auto;
+      background: #fff;
+      padding: 2em 1.2em;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+      display: flex;
+      flex-direction: column;
+      gap: 2em;
+    }
+    .section-title {
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #1e293b;
+      margin-bottom: 0.5em;
+      letter-spacing: 0.5px;
+    }
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+      margin-bottom: 1em;
+    }
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      font-size: 1em;
+    }
+    .info-label {
+      font-weight: 500;
+      color: #475569;
+      min-width: 90px;
+    }
+    .delivery {
+      background: #fbbf24;
+      color: #1e293b;
+      border-radius: 8px;
+      padding: 1em;
+      margin-bottom: 1em;
+      font-weight: 500;
+      text-align: center;
+    }
+    .payment {
+      background: #f0fdf4;
+      border-radius: 8px;
+      padding: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7em;
+      margin-bottom: 1em;
+    }
+    .payment-row {
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      font-size: 1em;
+    }
+    .icon {
+      font-size: 1.3em;
+      margin-right: 0.3em;
+    }
+    .products {
+      margin-top: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+    .product-card {
+      background: #eaf6ff;
+      border-radius: 8px;
+      padding: 1em;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5em;
+    }
+    .product-link {
+      display: inline-block;
+      background: #1e293b;
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0.7em 1.5em;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 0.5em;
+      transition: background 0.2s;
+      font-size: 1em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .product-link:hover {
+      background: #fbbf24;
+      color: #1e293b;
+    }
+    .no-products {
+      color: #888;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 1em;
+    }
+    footer {
+      text-align: center;
+      padding: 1em;
+      background: #eaf6ff;
+      color: #1e293b;
+      font-size: 1em;
+      border-top: 1px solid #dbeafe;
+      margin-top: 2em;
+    }
+    @media (max-width: 600px) {
+      main {
+        padding: 1em 0.3em;
+      }
+      header {
+        font-size: 1.3em;
+      }
+      .product-link {
+        padding: 1em;
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="storeName">Jed Dropshipping Store</header>
+  <main>
+    <div class="section-title">Store Information</div>
+    <div class="info">
+      <div class="info-row"><span class="info-label">Store Name:</span> <span id="storeName"></span></div>
+      <div class="info-row"><span class="info-label">Contact:</span> <span id="contact"></span></div>
+      <div class="info-row"><span class="info-label">Currency:</span> <span id="currency"></span></div>
+    </div>
+    <div class="section-title">Delivery</div>
+    <div class="delivery" id="deliveryZones"></div>
+    <div class="section-title">Payment Options</div>
+    <div class="payment">
+      <div class="payment-row"><span class="icon">📱</span>Mobile Money: <span id="totalMoney"></span></div>
+      <div class="payment-row"><span class="icon">🏦</span>Bank Account: <span id="bankAccount"></span></div>
+      <div class="payment-row"><span class="icon">💸</span>Cash on Delivery: <span id="cashOnDelivery"></span></div>
+    </div>
+    <div class="section-title">Products</div>
+    <div class="products" id="productsList"></div>
+  </main>
+  <footer>
+    Powered by Jed Dropshipping
+  </footer>
+  <script>
+    // Fetch live store data from backend
+    async function fetchStoreData() {
+      // Get storeId from URL query (?id=...)
+      const params = new URLSearchParams(window.location.search);
+      const storeId = params.get('id');
+      if (!storeId) {
+        showDemoStorefront();
+        return;
+      }
+      try {
+        const res = await fetch(`/api/stores?id=${storeId}`);
+        if (!res.ok) throw new Error('Store not found');
+        const storeData = await res.json();
+        // If data is all placeholders, show demo
+        if (
+          storeData.storeName === 'q' &&
+          storeData.contact === 'q' &&
+          storeData.currency === 'q' &&
+          storeData.payment?.mobileMoney === 'q' &&
+          storeData.payment?.bankAccount === 'q' &&
+          (!storeData.products || storeData.products.length === 0 || (storeData.products[0].url1 === 'q' || storeData.products[0].url === 'q'))
+        ) {
+          showDemoStorefront();
+          return;
+        }
+        // Populate page
+        // Store info
+        let name = storeData.storeName;
+        document.getElementById('storeName').textContent = (name && name !== 'q') ? name : 'No store name yet!';
+
+        let contact = storeData.contact;
+        document.getElementById('contact').textContent = (contact && contact !== 'q') ? contact : 'No contact info yet!';
+
+        let currency = storeData.currency;
+        document.getElementById('currency').textContent = (currency && currency !== 'q') ? currency : 'Currency not set';
+
+        // Payment
+        let momo = storeData.payment?.mobileMoney;
+        document.getElementById('totalMoney').textContent = (momo && momo !== 'q') ? momo : 'Not available';
+
+        let bank = storeData.payment?.bankAccount;
+        document.getElementById('bankAccount').textContent = (bank && bank !== 'q') ? bank : 'Not available';
+
+        let cod = storeData.payment?.cashOnDelivery;
+        document.getElementById('cashOnDelivery').textContent = (cod === true || cod === 'true') ? 'Yes' : 'No';
+
+        // Delivery zones
+        if (storeData.deliveryZones && storeData.deliveryZones.length > 0 && storeData.deliveryZones[0] !== 'q') {
+          document.getElementById('deliveryZones').textContent = `Delivery Zones: ${storeData.deliveryZones.join(', ')}`;
+        } else {
+          document.getElementById('deliveryZones').textContent = 'Nationwide delivery (we go everywhere!)';
+        }
+
+        // Products
+        const productsList = document.getElementById('productsList');
+        productsList.innerHTML = '';
+        if (storeData.products && storeData.products.length > 0) {
+          storeData.products.forEach(prod => {
+            if ((prod.url1 && prod.url1 !== 'q') || (prod.url && prod.url !== 'q')) {
+              let card = document.createElement('div');
+              card.className = 'product-card';
+              let link = document.createElement('a');
+              link.className = 'product-link';
+              link.target = '_blank';
+              link.href = prod.url1 || prod.url;
+              link.textContent = 'View Product';
+              card.appendChild(link);
+              productsList.appendChild(card);
+            }
+          });
+        }
+        if (!productsList.hasChildNodes()) {
+          let msg = document.createElement('div');
+          msg.className = 'no-products';
+          msg.textContent = 'No products yet. Check back soon!';
+          productsList.appendChild(msg);
+        }
+      } catch (err) {
+        showDemoStorefront();
+      }
+
+      // Demo storefront function
+      function showDemoStorefront() {
+        document.getElementById('storeName').textContent = 'Jed Mart';
+        document.getElementById('contact').textContent = '+256 700 123456';
+        document.getElementById('currency').textContent = 'UGX';
+        document.getElementById('totalMoney').textContent = 'Available (MTN, Airtel)';
+        document.getElementById('bankAccount').textContent = 'Stanbic Bank, 1234567890';
+        document.getElementById('cashOnDelivery').textContent = 'Yes';
+        document.getElementById('deliveryZones').textContent = 'Kampala, Wakiso, Entebbe';
+        const productsList = document.getElementById('productsList');
+        productsList.innerHTML = '';
+        let card1 = document.createElement('div');
+        card1.className = 'product-card';
+        let link1 = document.createElement('a');
+        link1.className = 'product-link';
+        link1.target = '_blank';
+        link1.href = '#';
+        link1.textContent = 'African Print Dress';
+        card1.appendChild(link1);
+        productsList.appendChild(card1);
+        let card2 = document.createElement('div');
+        card2.className = 'product-card';
+        let link2 = document.createElement('a');
+        link2.className = 'product-link';
+        link2.target = '_blank';
+        link2.href = '#';
+        link2.textContent = 'Handmade Beaded Necklace';
+        card2.appendChild(link2);
+        productsList.appendChild(card2);
+      }
+    }
+    fetchStoreData();
+  </script>
+</body>
+</html>

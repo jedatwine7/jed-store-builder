@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Store - Jed Dropshipping</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+    header {
+      background: #2d3e50;
+      color: #fff;
+      padding: 1.5em 1em 1em 1em;
+      text-align: center;
+      font-size: 2em;
+      letter-spacing: 1px;
+    }
+    main {
+      max-width: 500px;
+      margin: 2em auto;
+      background: #fff;
+      padding: 2em;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5em;
+    }
+    .section {
+      margin-bottom: 1em;
+    }
+    .label {
+      font-weight: bold;
+      color: #2d3e50;
+      margin-right: 0.5em;
+    }
+    .payment {
+      background: #eaf6ff;
+      border-radius: 8px;
+      padding: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7em;
+    }
+    .payment span {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+    .icon {
+      font-size: 1.2em;
+      margin-right: 0.3em;
+    }
+    .product-link {
+      display: block;
+      background: #2d3e50;
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 1em;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 1em;
+      transition: background 0.2s;
+    }
+    .product-link:hover {
+      background: #1a2533;
+    }
+    .store-id {
+      font-size: 0.9em;
+      color: #888;
+      text-align: right;
+      margin-top: 0.5em;
+    }
+    footer {
+      text-align: center;
+      padding: 1em;
+      background: #eaf6ff;
+      color: #2d3e50;
+      font-size: 1em;
+      border-top: 1px solid #dbeafe;
+      margin-top: 2em;
+    }
+    @media (max-width: 600px) {
+      main {
+        padding: 1em;
+      }
+      header {
+        font-size: 1.3em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="storeName">Jed Dropshipping Store</header>
+  <main>
+    <div class="section">
+      <span class="label">Contact:</span> <span id="contact"></span>
+    </div>
+    <div class="section">
+      <span class="label">Currency:</span> <span id="currency"></span>
+    </div>
+    <div class="section">
+      <span class="label">Delivery Zones:</span> <span id="deliveryZones"></span>
+    </div>
+    <div class="section payment">
+      <span><span class="icon">📱</span>Pay via Momo: <span id="mobileMoney"></span></span>
+      <span><span class="icon">🏦</span>Bank Account: <span id="bankAccount"></span></span>
+      <span><span class="icon">💸</span>COD for the bold ones: <span id="cashOnDelivery"></span></span>
+    </div>
+    <div class="section">
+      <a id="productLink" class="product-link" href="#" target="_blank">View Product &rarr;</a>
+    </div>
+    <div class="store-id" id="storeId"></div>
+  </main>
+  <footer>
+    Powered by Jed Dropshipping
+  </footer>
+  <script>
+    // Example JSON data (replace with actual fetch in production)
+    const storeData = {
+      payment: {
+        mobileMoney: "a",
+        bankAccount: "a",
+        cashOnDelivery: "true"
+      },
+      id: 1598551261381266689665,
+      storeName: "a",
+      currency: "a",
+      contact: "a",
+      deliveryZones: "a",
+      products: [
+        {
+          url: "http://localhost:9999/store/1598551261381266689665",
+          storeId: 1598551261381266689665
+        }
+      ]
+    };
+    // Populate page
+    document.getElementById('storeName').textContent = storeData.storeName;
+    document.getElementById('contact').textContent = storeData.contact;
+    document.getElementById('currency').textContent = storeData.currency;
+    document.getElementById('deliveryZones').textContent = storeData.deliveryZones;
+    document.getElementById('mobileMoney').textContent = storeData.payment.mobileMoney;
+    document.getElementById('bankAccount').textContent = storeData.payment.bankAccount;
+    document.getElementById('cashOnDelivery').textContent = storeData.payment.cashOnDelivery === "true" ? "Yes" : "No";
+    document.getElementById('storeId').textContent = `Store ID: ${storeData.id}`;
+    if (storeData.products && storeData.products.length > 0) {
+      document.getElementById('productLink').href = storeData.products[0].url;
+      document.getElementById('productLink').textContent = 'View Product &rarr;';
+    } else {
+      document.getElementById('productLink').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
