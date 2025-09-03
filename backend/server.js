@@ -10,6 +10,10 @@ const { Store } = require('./models');
 const app = express();
 app.use(express.json());
 app.use(cors());
+// Health check route
+app.get('/api/test', (req, res) => {
+  res.send('Jed Store Builder API is working!');
+});
 
 // Debug route: List all stores
 app.get('/api/stores', async (req, res) => {
@@ -81,7 +85,7 @@ app.post('/api/stores', upload.array('productImages'), async (req, res) => {
     }
     // Generate a simple unique URL
     const storeId = Date.now().toString();
-    const url = `http://localhost:5000/store/${storeId}`;
+    const url = `https://jed-store-backend.onrender.com/store/${storeId}`;
     const store = new Store({
       storeName,
       currency,
